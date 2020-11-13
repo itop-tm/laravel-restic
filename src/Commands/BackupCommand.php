@@ -1,13 +1,14 @@
 <?php
 
 namespace Itop\Restic\Commands;
+
+use Itop\Restic\Restic\ResticFactory;
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 
 class BackupCommand extends BaseCommand
 {
     /** @var string */
-    protected $signature = 'restic:backup';
+    protected $signature = 'restic:backup {repo} {--v1} {--v2}';
 
     /** @var string */
     protected $description = 'Run the backup.';
@@ -16,20 +17,21 @@ class BackupCommand extends BaseCommand
     {
         consoleOutput()->comment('Starting backup...');
 
-        $process = new Process([
-            $this->restic,
-            'backup',
-            $this->backupPaths,
-            "--exclude={$this->exclude}"
-        ]);
+        $restic = ResticFactory::buildBackupCommand(config('restic'), $this->argument('repo'));
 
-        $process->setTimeout(3600);
-        
+        if ($this->option('v1') == '1') {
+            $restic->addCommand('--verbose');
+        }
+
+        if ($this->option('v2') == '2') {
+            $restic->addCommand('--verbose=2');
+        }
+
         try {
 
-            $process->mustRun(null, $this->env);
+            $restic->run();
             
-            consoleOutput()->info( $process->getOutput() );
+            consoleOutput()->info($restic->getProcessOutput());
   
         } catch (ProcessFailedException $th) {
             consoleOutput()->error($th->getMessage());

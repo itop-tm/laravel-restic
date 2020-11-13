@@ -7,13 +7,17 @@ function consoleOutput(): ConsoleOutput
     return app(ConsoleOutput::class);
 }
 
-function stringify(array $array)
-{
-    $string = '';
+// function stringify(array $array)
+// {
+//     $string = '';
 
-    foreach ($array as $a) {
-        $string .= $a;
-    }
+//     if (count($array) == 1) {
+//         return $array[0];
+//     }
 
-    return $string;
-}
+//     foreach ($array as $key => $a) {
+//         $string .= $key == 0 ? $a : " $a";
+//     }
+
+//     return $string;
+// }

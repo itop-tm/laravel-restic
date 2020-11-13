@@ -5,22 +5,19 @@ namespace Itop\Restic\Commands;
 use Itop\Restic\Restic\ResticFactory;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-class InitCommand extends BaseCommand
+class ListCommand extends BaseCommand
 {
     /** @var string */
-    protected $signature = 'restic:init {repo} {--v1} {--v2}';
+    protected $signature = 'restic:snapshots {repo} {--v1} {--v2}';
 
     /** @var string */
-    protected $description = 'Preparing a new repository';
+    protected $description = 'listing snapshots';
 
     public function handle()
     {
-        consoleOutput()
-            ->comment("Preparing a {$this->argument('repo')} repository ...");
+        consoleOutput()->comment('listing snapshots');
 
-        $restic = ResticFactory::buildInitCommand(
-            config('restic'), $this->argument('repo')
-        );
+        $restic = ResticFactory::buildListCommand(config('restic'), $this->argument('repo'));
 
         if ($this->option('v1') == '1') {
             $restic->addCommand('--verbose');
@@ -35,7 +32,7 @@ class InitCommand extends BaseCommand
             $restic->run();
             
             consoleOutput()->info($restic->getProcessOutput());
-
+  
         } catch (ProcessFailedException $th) {
             consoleOutput()->error($th->getMessage());
         }

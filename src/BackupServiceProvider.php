@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Itop\Restic\Commands\InitCommand;
 use Itop\Restic\Commands\BackupCommand;
 use Itop\Restic\Commands\PruneCommand;
+use Itop\Restic\Commands\ListCommand;
+use Itop\Restic\Commands\RestoreCommand;
 use Itop\Restic\Helpers\ConsoleOutput;
 
 class BackupServiceProvider extends ServiceProvider
@@ -24,11 +26,15 @@ class BackupServiceProvider extends ServiceProvider
         $this->app->bind('command.restic:init', InitCommand::class);
         $this->app->bind('command.restic:backup', BackupCommand::class);
         $this->app->bind('command.restic:prune', PruneCommand::class);
+        $this->app->bind('command.restic:snapshots', ListCommand::class);
+        $this->app->bind('command.restic:restore', RestoreCommand::class);
 
         $this->commands([
             'command.restic:init',
             'command.restic:backup',
             'command.restic:prune',
+            'command.restic:snapshots',
+            'command.restic:restore',
         ]);
 
         $this->app->singleton(ConsoleOutput::class);

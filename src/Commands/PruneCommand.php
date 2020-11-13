@@ -3,12 +3,12 @@
 namespace Itop\Restic\Commands;
 
 use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
+use Itop\Restic\Restic\ResticFactory;
 
 class PruneCommand extends BaseCommand
 {
     /** @var string */
-    protected $signature = 'restic:prune';
+    protected $signature = 'restic:prune {repo} {--v1} {--v2}';
 
     /** @var string */
     protected $description = 'Run the prune.';
@@ -17,15 +17,23 @@ class PruneCommand extends BaseCommand
     {
         consoleOutput()->comment('prune...');
 
-        $process = new Process(['restic', 'prune']);
+        $restic = ResticFactory::buildPruneCommand(
+            config('restic'), $this->argument('repo')
+        );
 
-        $process->setTimeout(3600);
-        
+        if ($this->option('v1') == '1') {
+            $restic->addCommand('--verbose');
+        }
+
+        if ($this->option('v2') == '2') {
+            $restic->addCommand('--verbose=2');
+        }
+
         try {
 
-            $process->mustRun(null, $this->env);
+            $restic->run();
             
-            consoleOutput()->info($process->getOutput());
+            consoleOutput()->info($restic->getProcessOutput());
 
         } catch (ProcessFailedException $th) {
             consoleOutput()->error($th->getMessage());
