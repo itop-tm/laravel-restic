@@ -15,7 +15,8 @@ class BackupCommand extends BaseCommand
 
     public function handle()
     {
-        consoleOutput()->comment('Starting backup...');
+        consoleOutput()
+            ->comment("Starting backup {$this->argument('repo')}");
 
         $restic = ResticFactory::buildBackupCommand(config('restic'), $this->argument('repo'));
 
