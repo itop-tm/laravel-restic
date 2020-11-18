@@ -8,7 +8,17 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 class RestoreCommand extends BaseCommand
 {
     /** @var string */
-    protected $signature = 'restic:restore {repo} {snapshot} {destination} {--v1} {--v2}';
+    protected $signature = '
+        restic:restore 
+        {repo : Repository name specified in config}
+        {snapshot : snapshot to restore} 
+        {--target= : destination}
+        {--host= : --host and --path filters to choose the last backup for a specific host, path or both}
+        {--path=}
+        {--exclude=* : Use --exclude and --include to restrict the restore to a subset of files in the snapshot. For example, to restore a single file}
+        {--include=*} 
+        {--v= : verbose level}
+    ';
 
     /** @var string */
     protected $description = 'restoring from backup';
@@ -17,23 +27,10 @@ class RestoreCommand extends BaseCommand
     {
         consoleOutput()
             ->comment(
-                "restoring Snapshot {$this->argument('snapshot')} to {$this->argument('destination')}"
+                "restoring Snapshot {$this->argument('snapshot')} to {$this->option('target')}"
             );
 
-        $restic = ResticFactory::buildRestoreCommand(
-                        config('restic'), 
-                        $this->argument('repo'),
-                        $this->argument('snapshot'),
-                        $this->argument('destination')
-                    );
-
-        if ($this->option('v1') == '1') {
-            $restic->addCommand('--verbose');
-        }
-
-        if ($this->option('v2') == '2') {
-            $restic->addCommand('--verbose=2');
-        }
+        $restic = ResticFactory::buildRestoreCommand(config('restic'), $this);
 
         try {
 

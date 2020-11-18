@@ -8,6 +8,8 @@ use Itop\Restic\Commands\BackupCommand;
 use Itop\Restic\Commands\PruneCommand;
 use Itop\Restic\Commands\ListCommand;
 use Itop\Restic\Commands\RestoreCommand;
+use Itop\Restic\Commands\ForgetCommand;
+use Itop\Restic\Commands\CheckCommand;
 use Itop\Restic\Helpers\ConsoleOutput;
 
 class BackupServiceProvider extends ServiceProvider
@@ -28,6 +30,8 @@ class BackupServiceProvider extends ServiceProvider
         $this->app->bind('command.restic:prune', PruneCommand::class);
         $this->app->bind('command.restic:snapshots', ListCommand::class);
         $this->app->bind('command.restic:restore', RestoreCommand::class);
+        $this->app->bind('command.restic:forget', ForgetCommand::class);
+        $this->app->bind('command.restic:check', CheckCommand::class);
 
         $this->commands([
             'command.restic:init',
@@ -35,6 +39,8 @@ class BackupServiceProvider extends ServiceProvider
             'command.restic:prune',
             'command.restic:snapshots',
             'command.restic:restore',
+            'command.restic:forget',
+            'command.restic:check'
         ]);
 
         $this->app->singleton(ConsoleOutput::class);

@@ -27,7 +27,15 @@ class Restic
         return $this;
     }
 
-    public function getCommand() : array
+    public function when($argument, $function) : self
+    {
+        if (!empty($argument) && is_callable($function)) {
+            $function();
+        }
+        return $this;
+    }
+
+    public function getCommands() : array
     {
         return $this->command;
     }
@@ -43,6 +51,19 @@ class Restic
         foreach ($env as $key => $v) {
             $this->env[strtoupper($key)] = is_array($v) ? implode(' ', $v) : $v;
         }
+        return $this;
+    }
+
+    public function setVerbose($level) : self
+    {
+        if ($level == '1') {
+            $this->addCommand("--verbose");
+        }
+
+        if ($level == '2') {
+            $this->addCommand("--verbose=2");
+        }
+
         return $this;
     }
 
@@ -74,6 +95,33 @@ class Restic
     public function getProcessOutput()
     {
         return $this->process->getOutput();
+    }
+
+    public function autoAddOptions($name, $value)
+    {
+        $exclude = ['v'];
+        
+        if (in_array($name, $exclude)) {
+            return $this;
+        }
+
+        if ($value && is_string($value)) {
+            $this->addCommand("--$name")->addCommand($value);
+            return $this;
+        }
+
+        if ($value && is_array($value) ) {
+            $this->addCommand("--$name");
+            $this->addCommand(implode(',', $value));
+            return $this;
+        } 
+
+        if (is_bool($value) && $value) {
+            $this->addCommand("--$name");
+            return $this;
+        }
+
+        return $this;
     }
 
     protected function merge($command): void
