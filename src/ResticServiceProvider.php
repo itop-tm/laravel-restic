@@ -12,7 +12,7 @@ use Itop\Restic\Commands\ForgetCommand;
 use Itop\Restic\Commands\CheckCommand;
 use Itop\Restic\Helpers\ConsoleOutput;
 
-class BackupServiceProvider extends ServiceProvider
+class ResticServiceProvider extends ServiceProvider
 {
     public function boot()
     {

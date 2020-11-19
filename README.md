@@ -35,10 +35,10 @@ go version
 Confirm that the command prints the installed version of Go.
 
 ---
+### Restic installation
 
 [Restic](https://restic.readthedocs.io) is a backup program that is fast, efficient and secure. It supports the three major operating systems (Linux, macOS, Windows) and a few smaller ones (FreeBSD, OpenBSD).
 
-### Restic installation
 #### Ubuntu
 On Debian, there’s a package called restic which can be installed from the official repos, e.g. with apt-get:
 ```bash
@@ -64,7 +64,9 @@ For other installation guides for Linux distributions or windows go [Restic inst
 
 You can install this package via composer using:
 
+```bash
 composer require itop/laravel-restic
+```
 
 The package will automatically register its service provider.
 

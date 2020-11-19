@@ -39,10 +39,12 @@ class BackupCommand extends BaseCommand
 
             $restic->run();
             
-            consoleOutput()->info($restic->getProcessOutput());
+            consoleOutput()
+                ->info($restic->getProcessOutput());
   
         } catch (ProcessFailedException $th) {
-            consoleOutput()->error($th->getMessage());
+            consoleOutput()
+                ->error($th->getMessage());
         }
     }
 }

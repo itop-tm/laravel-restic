@@ -54,7 +54,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Itop\\Restic\\BackupServiceProvider"
+                "Itop\\Restic\\ResticServiceProvider"
             ]
         }
     },
