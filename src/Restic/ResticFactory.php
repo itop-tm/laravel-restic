@@ -113,4 +113,17 @@ class ResticFactory
         
         return $restic;
     }
+
+    public static function buildKeyCommand(array $config, $c): Restic
+    {
+        $r = $config['repositories'][$c->argument('repo')];
+
+        return (new Restic())
+                ->addCommand($config['restic_binary_path'])
+                ->addCommand('key')
+                ->addCommand($c->argument('action'))
+                ->setEnvironment($r['env'])
+                ->setVerbose($c->option('v'));
+    }
+
 }

@@ -10,6 +10,7 @@ use Itop\Restic\Commands\ListCommand;
 use Itop\Restic\Commands\RestoreCommand;
 use Itop\Restic\Commands\ForgetCommand;
 use Itop\Restic\Commands\CheckCommand;
+use Itop\Restic\Commands\KeyCommand;
 use Itop\Restic\Helpers\ConsoleOutput;
 
 class ResticServiceProvider extends ServiceProvider
@@ -32,6 +33,7 @@ class ResticServiceProvider extends ServiceProvider
         $this->app->bind('command.restic:restore', RestoreCommand::class);
         $this->app->bind('command.restic:forget', ForgetCommand::class);
         $this->app->bind('command.restic:check', CheckCommand::class);
+        $this->app->bind('command.restic:key', KeyCommand::class);
 
         $this->commands([
             'command.restic:init',
@@ -40,7 +42,8 @@ class ResticServiceProvider extends ServiceProvider
             'command.restic:snapshots',
             'command.restic:restore',
             'command.restic:forget',
-            'command.restic:check'
+            'command.restic:check',
+            'command.restic:key'
         ]);
 
         $this->app->singleton(ConsoleOutput::class);
