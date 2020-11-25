@@ -58,6 +58,13 @@ if you have problems reaching go modules and repositories try:
 GOPROXY=direct
 go run build.go
 ```
+or 
+
+```bash
+go env -w GO111MODULE=on
+go env -w GOPROXY=https://goproxy.cn,direct
+```
+
 For other installation guides for Linux distributions or windows go [Restic installation](https://restic.readthedocs.io/en/latest/020_installation.html) 
 
 ## Basic installation
