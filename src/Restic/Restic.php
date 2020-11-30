@@ -16,7 +16,7 @@ class Restic
     protected $command = [];
 
     /** @var int */
-    protected $timeout = 3600;
+    protected $timeout = 7200;
 
     /** @var Symfony\Component\Process\Process */
     protected $proccess;
